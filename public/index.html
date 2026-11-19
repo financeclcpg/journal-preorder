@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2027 Duc in Altum Prayer Journal – Pre-Order</title>
+<meta name="description" content="Pre-order your 2027 Duc in Altum prayer journal from City Light Church Penang.">
+<style>
+  :root {
+    --bg: #faf8f3;
+    --card: #ffffff;
+    --soft: #f3f0e8;
+    --line: #e4dfd3;
+    --ink: #1f1d1a;
+    --muted: #6f6a60;
+    --accent: #1f3a5f;
+    --accent-ink: #ffffff;
+    --error: #b42318;
+    --ok: #1d6b3a;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 32px 18px 64px; }
+  header { text-align: center; margin-bottom: 28px; }
+  header .eyebrow { letter-spacing: .14em; text-transform: uppercase; font-size: 12px; color: var(--muted); margin: 0 0 8px; }
+  header h1 { font-size: 28px; line-height: 1.2; margin: 0 0 10px; }
+  header .verse { font-style: italic; color: var(--muted); margin: 0 0 14px; }
+  header .intro { margin: 0; }
+  .price-pill {
+    display: inline-block; margin-top: 14px; padding: 6px 14px; border-radius: 999px;
+    background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: 15px;
+  }
+  form { display: grid; gap: 22px; }
+  fieldset {
+    border: 1px solid var(--line); background: var(--card); border-radius: var(--radius);
+    padding: 20px 18px; margin: 0;
+  }
+  legend { font-weight: 700; font-size: 18px; padding: 0 6px; }
+  .field { margin-top: 16px; }
+  .field:first-of-type { margin-top: 6px; }
+  label, .label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .req { color: var(--error); }
+  .hint { font-size: 14px; color: var(--muted); margin: -2px 0 8px; }
+  input[type=text], input[type=tel], input[type=email], input[type=number], textarea, select {
+    width: 100%; padding: 11px 12px; font: inherit; color: inherit;
+    border: 1px solid var(--line); border-radius: 10px; background: #fff;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .choices { display: grid; gap: 8px; }
+  .choice {
+    display: flex; gap: 10px; align-items: center; padding: 11px 12px;
+    border: 1px solid var(--line); border-radius: 10px; cursor: pointer; font-weight: 500;
+  }
+  .choice:has(input:checked) { border-color: var(--accent); background: #eef2f8; }
+  .choice input { margin: 0; accent-color: var(--accent); }
+  .qty { display: flex; align-items: center; gap: 10px; }
+  .qty input { width: 90px; text-align: center; }
+  .qty button {
+    width: 42px; height: 42px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--soft); font-size: 20px; cursor: pointer; color: var(--ink);
+  }
+  .total {
+    margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--soft);
+    display: flex; justify-content: space-between; font-weight: 700; font-size: 17px;
+  }
+  .pay-block { text-align: center; }
+  .qr-card {
+    display: inline-block; padding: 16px 16px 10px; border: 1px solid var(--line);
+    border-radius: var(--radius); background: #fff; margin: 4px auto 12px;
+  }
+  .qr-card img { display: block; width: 220px; height: auto; image-rendering: pixelated; }
+  .qr-card small { display: block; margin-top: 6px; font-size: 11px; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+  .pay-note { color: var(--muted); margin: 0 0 14px; }
+  .bank {
+    background: var(--soft); border-radius: 12px; padding: 14px; text-align: center; margin-bottom: 6px;
+  }
+  .bank p { margin: 2px 0; }
+  .ref-tip { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+  .hidden { display: none !important; }
+  .file-drop {
+    border: 1.5px dashed var(--line); border-radius: 12px; padding: 16px; text-align: center; background: #fff;
+  }
+  .file-name { margin-top: 8px; font-size: 14px; color: var(--muted); word-break: break-all; }
+  .hp { position: absolute; left: -9999px; }
+  .error-msg { color: var(--error); font-size: 14px; margin-top: 6px; }
+  .form-error {
+    border: 1px solid #f3c2bd; background: #fdf0ee; color: var(--error);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  button.submit {
+    width: 100%; padding: 15px; border: 0; border-radius: 12px; background: var(--accent);
+    color: var(--accent-ink); font: inherit; font-weight: 700; font-size: 17px; cursor: pointer;
+  }
+  button.submit[disabled] { opacity: .6; cursor: progress; }
+  .success {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 28px 20px; text-align: center;
+  }
+  .success h2 { margin: 0 0 8px; color: var(--ok); }
+  .success .order-no { font-size: 22px; font-weight: 700; margin: 10px 0; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">City Light Church Penang</p>
+    <h1>2027 Duc in Altum Prayer Journal</h1>
+    <p class="verse">"Put out into the deep." (Luke 5:4)</p>
+    <p class="intro">Reserve your copy of the 2027 prayer journal. Please fill in one form per household or person ordering. The church office will contact you to confirm your order.</p>
+    <span class="price-pill">RM27 per book</span>
+  </header>
+
+  <form id="orderForm" novalidate>
+    <!-- Spam trap: real people never see or fill this -->
+    <div class="hp" aria-hidden="true">
+      <label>Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+
+    <fieldset>
+      <legend>About you</legend>
+      <div class="field">
+        <label for="name">Full name <span class="req">*</span></label>
+        <input id="name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="phone">Phone number (WhatsApp) <span class="req">*</span></label>
+        <p class="hint">We'll use this to confirm your order and tell you when the journals arrive.</p>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 012-345 6789" required>
+      </div>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="bec">BEC / ministry / zone</label>
+        <p class="hint">Optional. Helps us group orders for distribution.</p>
+        <input id="bec" name="bec" type="text">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Your order</legend>
+      <div class="field">
+        <label for="copies">Number of copies <span class="req">*</span></label>
+        <div class="qty">
+          <button type="button" data-step="-1" aria-label="One fewer copy">−</button>
+          <input id="copies" name="copies" type="number" inputmode="numeric" min="1" max="50" value="1" required>
+          <button type="button" data-step="1" aria-label="One more copy">+</button>
+        </div>
+        <div class="total"><span>Total</span><span id="totalText">RM27</span></div>
+      </div>
+      <div class="field">
+        <span class="label">How would you like to collect your journal? <span class="req">*</span></span>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="collection" value="Collect at parish office" required> Collect at parish office</label>
+          <label class="choice"><input type="radio" name="collection" value="Collect after weekend Mass"> Collect after weekend Mass</label>
+          <label class="choice"><input type="radio" name="collection" value="Through my BEC / ministry leader"> Through my BEC / ministry leader</label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="remarks">Remarks</label>
+        <p class="hint">Anything we should know, e.g. ordering on behalf of someone else.</p>
+        <textarea id="remarks" name="remarks"></textarea>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Payment</legend>
+      <div class="field">
+        <span class="label">How will you pay? <span class="req">*</span></span>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="payment" value="DuitNow QR" required> Scan QR (any e-wallet or bank app)</label>
+          <label class="choice"><input type="radio" name="payment" value="Online bank transfer"> Online bank transfer</label>
+          <label class="choice"><input type="radio" name="payment" value="Cash at parish office"> Cash at the parish office</label>
+        </div>
+      </div>
+
+      <div id="onlinePay" class="pay-block hidden">
+        <p class="pay-note" style="margin-top:18px">Please pay <strong id="payAmount">RM27</strong>, then upload your receipt below.</p>
+        <div class="qr-card">
+          <img src="qr.png" alt="Payment QR code for City Light Church Penang">
+          <small>All e-wallets &amp; banks' QR pay</small>
+        </div>
+        <div class="bank">
+          <p><strong>Bank:</strong> Public Bank</p>
+          <p><strong>Account Number:</strong> 3177 874 802</p>
+          <p><strong>Beneficiary Name:</strong> City Light Church Penang</p>
+        </div>
+        <p class="ref-tip">Tip: put your name in the payment reference so we can match it.</p>
+
+        <div class="field" style="text-align:left">
+          <label for="receipt">Upload payment receipt <span class="req">*</span></label>
+          <p class="hint">A screenshot or PDF of your payment (max 4 MB).</p>
+          <div class="file-drop">
+            <input id="receipt" name="receipt" type="file" accept="image/*,application/pdf">
+            <div id="fileName" class="file-name"></div>
+          </div>
+        </div>
+      </div>
+
+      <p id="cashNote" class="pay-note hidden" style="margin-top:16px">Please pay <strong id="cashAmount">RM27</strong> at the parish office. We'll mark your order as paid once we receive it.</p>
+    </fieldset>
+
+    <div id="formError" class="form-error hidden" role="alert"></div>
+    <button class="submit" type="submit" id="submitBtn">Submit pre-order</button>
+  </form>
+
+  <div id="success" class="success hidden" role="status">
+    <h2>Thank you! 🙏</h2>
+    <p>Your pre-order has been received.</p>
+    <p class="order-no" id="orderNo"></p>
+    <p id="successDetail"></p>
+    <p class="pay-note">Please keep your order number. The church office will contact you on WhatsApp to confirm.</p>
+  </div>
+
+  <footer>City Light Church Penang</footer>
+</div>
+
+<script>
+(function () {
+  const PRICE = 27;
+  const MAX_FILE = 4 * 1024 * 1024;
+  const form = document.getElementById('orderForm');
+  const copies = document.getElementById('copies');
+  const onlinePay = document.getElementById('onlinePay');
+  const cashNote = document.getElementById('cashNote');
+  const receipt = document.getElementById('receipt');
+  const fileName = document.getElementById('fileName');
+  const formError = document.getElementById('formError');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function qty() {
+    const n = parseInt(copies.value, 10);
+    return Number.isFinite(n) ? n : 0;
+  }
+  function money(n) { return 'RM' + n.toLocaleString('en-MY'); }
+  function refreshTotal() {
+    const t = money(Math.max(qty(), 0) * PRICE);
+    ['totalText', 'payAmount', 'cashAmount'].forEach(id => document.getElementById(id).textContent = t);
+  }
+  document.querySelectorAll('.qty button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = Math.min(50, Math.max(1, qty() + Number(btn.dataset.step)));
+      copies.value = next;
+      refreshTotal();
+    });
+  });
+  copies.addEventListener('input', refreshTotal);
+
+  function paymentValue() {
+    const p = form.querySelector('input[name=payment]:checked');
+    return p ? p.value : '';
+  }
+  form.querySelectorAll('input[name=payment]').forEach(r => r.addEventListener('change', () => {
+    const cash = paymentValue() === 'Cash at parish office';
+    onlinePay.classList.toggle('hidden', cash);
+    cashNote.classList.toggle('hidden', !cash);
+  }));
+
+  receipt.addEventListener('change', () => {
+    const f = receipt.files[0];
+    fileName.textContent = f ? f.name : '';
+  });
+
+  // Shrink large photos so uploads stay small and fast on mobile data.
+  async function prepareFile(file) {
+    if (!file.type.startsWith('image/') || file.type === 'image/gif') return file;
+    try {
+      const bmp = await createImageBitmap(file);
+      const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+      if (scale === 1 && file.size < 1.5 * 1024 * 1024) return file;
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(bmp.width * scale);
+      canvas.height = Math.round(bmp.height * scale);
+      canvas.getContext('2d').drawImage(bmp, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.82));
+      if (!blob) return file;
+      const base = file.name.replace(/\.[^.]+$/, '') || 'receipt';
+      return new File([blob], base + '.jpg', { type: 'image/jpeg' });
+    } catch (e) {
+      return file;
+    }
+  }
+  function toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result).split(',')[1]);
+      r.onerror = reject;
+      r.readAsDataURL(file);
+    });
+  }
+
+  function showError(msg) {
+    formError.textContent = msg;
+    formError.classList.remove('hidden');
+    formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formError.classList.add('hidden');
+
+    const data = new FormData(form);
+    const name = (data.get('name') || '').trim();
+    const phone = (data.get('phone') || '').trim();
+    const email = (data.get('email') || '').trim();
+    const n = qty();
+    const collection = data.get('collection') || '';
+    const payment = paymentValue();
+
+    if (!name) return showError('Please enter your full name.');
+    if (phone.replace(/\D/g, '').length < 9) return showError('Please enter a valid phone number.');
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Please check your email address.');
+    if (!(n >= 1 && n <= 50)) return showError('Please enter between 1 and 50 copies.');
+    if (!collection) return showError('Please choose how you would like to collect your journal.');
+    if (!payment) return showError('Please choose how you will pay.');
+
+    let receiptPayload = null;
+    if (payment !== 'Cash at parish office') {
+      const f = receipt.files[0];
+      if (!f) return showError('Please upload your payment receipt.');
+      const ready = await prepareFile(f);
+      if (ready.size > MAX_FILE) return showError('Your receipt file is larger than 4 MB. Please upload a smaller screenshot.');
+      receiptPayload = { filename: ready.name, contentType: ready.type || 'application/octet-stream', base64: await toBase64(ready) };
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+    try {
+      const res = await fetch('/.netlify/functions/submit-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          website: data.get('website') || '',
+          name, phone, email,
+          bec: (data.get('bec') || '').trim(),
+          copies: n,
+          collection, payment,
+          remarks: (data.get('remarks') || '').trim(),
+          receipt: receiptPayload
+        })
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || !out.ok) throw new Error(out.error || 'Something went wrong. Please try again.');
+
+      form.classList.add('hidden');
+      document.getElementById('orderNo').textContent = out.orderNo ? 'Order no. #' + out.orderNo : '';
+      document.getElementById('successDetail').textContent =
+        n + (n === 1 ? ' copy' : ' copies') + ' · ' + money(n * PRICE) + ' · ' + collection;
+      document.getElementById('success').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      showError(err.message || 'Something went wrong. Please try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit pre-order';
+    }
+  });
+
+  refreshTotal();
+})();
+</script>
+</body>
+</html>

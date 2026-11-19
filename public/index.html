@@ -115,7 +115,7 @@
     <p class="eyebrow">City Light Church Penang</p>
     <h1>2027 Duc in Altum Prayer Journal</h1>
     <p class="verse">"Put out into the deep." (Luke 5:4)</p>
-    <p class="intro">Reserve your copy of the 2027 prayer journal. Please fill in one form per household or person ordering. The church office will contact you to confirm your order.</p>
+    <p class="intro">Reserve your copy of the 2027 prayer journal. Please fill in one form per household or person ordering.</p>
     <span class="price-pill">RM27 per book</span>
   </header>
 
@@ -133,17 +133,12 @@
       </div>
       <div class="field">
         <label for="phone">Phone number (WhatsApp) <span class="req">*</span></label>
-        <p class="hint">We'll use this to confirm your order and tell you when the journals arrive.</p>
+        <p class="hint">In case we need to reach you about your order.</p>
         <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 012-345 6789" required>
       </div>
       <div class="field">
         <label for="email">Email address</label>
         <input id="email" name="email" type="email" autocomplete="email">
-      </div>
-      <div class="field">
-        <label for="bec">BEC / ministry / zone</label>
-        <p class="hint">Optional. Helps us group orders for distribution.</p>
-        <input id="bec" name="bec" type="text">
       </div>
     </fieldset>
 
@@ -159,14 +154,6 @@
         <div class="total"><span>Total</span><span id="totalText">RM27</span></div>
       </div>
       <div class="field">
-        <span class="label">How would you like to collect your journal? <span class="req">*</span></span>
-        <div class="choices">
-          <label class="choice"><input type="radio" name="collection" value="Collect at parish office" required> Collect at parish office</label>
-          <label class="choice"><input type="radio" name="collection" value="Collect after weekend Mass"> Collect after weekend Mass</label>
-          <label class="choice"><input type="radio" name="collection" value="Through my BEC / ministry leader"> Through my BEC / ministry leader</label>
-        </div>
-      </div>
-      <div class="field">
         <label for="remarks">Remarks</label>
         <p class="hint">Anything we should know, e.g. ordering on behalf of someone else.</p>
         <textarea id="remarks" name="remarks"></textarea>
@@ -180,11 +167,10 @@
         <div class="choices">
           <label class="choice"><input type="radio" name="payment" value="DuitNow QR" required> Scan QR (any e-wallet or bank app)</label>
           <label class="choice"><input type="radio" name="payment" value="Online bank transfer"> Online bank transfer</label>
-          <label class="choice"><input type="radio" name="payment" value="Cash at parish office"> Cash at the parish office</label>
         </div>
       </div>
 
-      <div id="onlinePay" class="pay-block hidden">
+      <div id="onlinePay" class="pay-block">
         <p class="pay-note" style="margin-top:18px">Please pay <strong id="payAmount">RM27</strong>, then upload your receipt below.</p>
         <div class="qr-card">
           <img src="qr.png" alt="Payment QR code for City Light Church Penang">
@@ -206,8 +192,6 @@
           </div>
         </div>
       </div>
-
-      <p id="cashNote" class="pay-note hidden" style="margin-top:16px">Please pay <strong id="cashAmount">RM27</strong> at the parish office. We'll mark your order as paid once we receive it.</p>
     </fieldset>
 
     <div id="formError" class="form-error hidden" role="alert"></div>
@@ -219,7 +203,7 @@
     <p>Your pre-order has been received.</p>
     <p class="order-no" id="orderNo"></p>
     <p id="successDetail"></p>
-    <p class="pay-note">Please keep your order number. The church office will contact you on WhatsApp to confirm.</p>
+    <p class="pay-note">Please keep your order number for reference.</p>
   </div>
 
   <footer>City Light Church Penang</footer>
@@ -231,8 +215,6 @@
   const MAX_FILE = 4 * 1024 * 1024;
   const form = document.getElementById('orderForm');
   const copies = document.getElementById('copies');
-  const onlinePay = document.getElementById('onlinePay');
-  const cashNote = document.getElementById('cashNote');
   const receipt = document.getElementById('receipt');
   const fileName = document.getElementById('fileName');
   const formError = document.getElementById('formError');
@@ -245,7 +227,7 @@
   function money(n) { return 'RM' + n.toLocaleString('en-MY'); }
   function refreshTotal() {
     const t = money(Math.max(qty(), 0) * PRICE);
-    ['totalText', 'payAmount', 'cashAmount'].forEach(id => document.getElementById(id).textContent = t);
+    ['totalText', 'payAmount'].forEach(id => document.getElementById(id).textContent = t);
   }
   document.querySelectorAll('.qty button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -260,11 +242,6 @@
     const p = form.querySelector('input[name=payment]:checked');
     return p ? p.value : '';
   }
-  form.querySelectorAll('input[name=payment]').forEach(r => r.addEventListener('change', () => {
-    const cash = paymentValue() === 'Cash at parish office';
-    onlinePay.classList.toggle('hidden', cash);
-    cashNote.classList.toggle('hidden', !cash);
-  }));
 
   receipt.addEventListener('change', () => {
     const f = receipt.files[0];
@@ -314,24 +291,19 @@
     const phone = (data.get('phone') || '').trim();
     const email = (data.get('email') || '').trim();
     const n = qty();
-    const collection = data.get('collection') || '';
     const payment = paymentValue();
 
     if (!name) return showError('Please enter your full name.');
     if (phone.replace(/\D/g, '').length < 9) return showError('Please enter a valid phone number.');
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Please check your email address.');
     if (!(n >= 1 && n <= 50)) return showError('Please enter between 1 and 50 copies.');
-    if (!collection) return showError('Please choose how you would like to collect your journal.');
     if (!payment) return showError('Please choose how you will pay.');
 
-    let receiptPayload = null;
-    if (payment !== 'Cash at parish office') {
-      const f = receipt.files[0];
-      if (!f) return showError('Please upload your payment receipt.');
-      const ready = await prepareFile(f);
-      if (ready.size > MAX_FILE) return showError('Your receipt file is larger than 4 MB. Please upload a smaller screenshot.');
-      receiptPayload = { filename: ready.name, contentType: ready.type || 'application/octet-stream', base64: await toBase64(ready) };
-    }
+    const f = receipt.files[0];
+    if (!f) return showError('Please upload your payment receipt.');
+    const ready = await prepareFile(f);
+    if (ready.size > MAX_FILE) return showError('Your receipt file is larger than 4 MB. Please upload a smaller screenshot.');
+    const receiptPayload = { filename: ready.name, contentType: ready.type || 'application/octet-stream', base64: await toBase64(ready) };
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting…';
@@ -342,9 +314,8 @@
         body: JSON.stringify({
           website: data.get('website') || '',
           name, phone, email,
-          bec: (data.get('bec') || '').trim(),
           copies: n,
-          collection, payment,
+          payment,
           remarks: (data.get('remarks') || '').trim(),
           receipt: receiptPayload
         })
@@ -355,7 +326,7 @@
       form.classList.add('hidden');
       document.getElementById('orderNo').textContent = out.orderNo ? 'Order no. #' + out.orderNo : '';
       document.getElementById('successDetail').textContent =
-        n + (n === 1 ? ' copy' : ' copies') + ' · ' + money(n * PRICE) + ' · ' + collection;
+        n + (n === 1 ? ' copy' : ' copies') + ' · ' + money(n * PRICE);
       document.getElementById('success').classList.remove('hidden');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {

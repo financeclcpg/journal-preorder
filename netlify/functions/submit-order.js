@@ -6,12 +6,7 @@ const BASE_ID = process.env.AIRTABLE_BASE_ID || 'app7ebQVUPNPncfnQ';
 const TABLE_ID = process.env.AIRTABLE_TABLE_ID || 'tblYP1oTivxSfP9n5';
 const RECEIPT_FIELD_ID = 'fldrk0EepYMdGETe8'; // "Payment Receipt" attachment field
 
-const PAYMENT_OPTIONS = ['DuitNow QR', 'Online bank transfer', 'Cash at parish office'];
-const COLLECTION_OPTIONS = [
-  'Collect at parish office',
-  'Collect after weekend Mass',
-  'Through my BEC / ministry leader',
-];
+const PAYMENT_OPTIONS = ['DuitNow QR', 'Online bank transfer'];
 const MAX_RECEIPT_BYTES = 4 * 1024 * 1024;
 const ALLOWED_TYPES = /^(image\/(jpeg|png|webp|heic|heif|gif)|application\/pdf)$/;
 
@@ -46,22 +41,19 @@ exports.handler = async (event) => {
   const name = clean(input.name, 120);
   const phone = clean(input.phone, 30);
   const email = clean(input.email, 120);
-  const bec = clean(input.bec, 120);
   const remarks = clean(input.remarks, 1000);
   const copies = Number(input.copies);
   const payment = clean(input.payment, 60);
-  const collection = clean(input.collection, 60);
 
   if (!name) return reply(400, { ok: false, error: 'Please enter your full name.' });
   if (phone.replace(/\D/g, '').length < 9) return reply(400, { ok: false, error: 'Please enter a valid phone number.' });
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return reply(400, { ok: false, error: 'Please check your email address.' });
   if (!Number.isInteger(copies) || copies < 1 || copies > 50) return reply(400, { ok: false, error: 'Please enter between 1 and 50 copies.' });
   if (!PAYMENT_OPTIONS.includes(payment)) return reply(400, { ok: false, error: 'Please choose how you will pay.' });
-  if (!COLLECTION_OPTIONS.includes(collection)) return reply(400, { ok: false, error: 'Please choose how you would like to collect your journal.' });
 
   const receipt = input.receipt;
-  const needsReceipt = payment !== 'Cash at parish office';
-  if (needsReceipt) {
+  const needsReceipt = true;
+  {
     if (!receipt || !receipt.base64) return reply(400, { ok: false, error: 'Please upload your payment receipt.' });
     if (!ALLOWED_TYPES.test(String(receipt.contentType))) return reply(400, { ok: false, error: 'Please upload the receipt as an image or PDF.' });
     const approxBytes = Math.floor(String(receipt.base64).length * 3 / 4);
@@ -73,11 +65,9 @@ exports.handler = async (event) => {
     'Phone (WhatsApp)': phone,
     'Number of Copies': copies,
     'Payment Method': payment,
-    'Collection Preference': collection,
     'Payment Status': 'Unpaid',
   };
   if (email) fields['Email'] = email;
-  if (bec) fields['BEC / Ministry'] = bec;
   if (remarks) fields['Remarks'] = remarks;
 
   // 1) Create the order record.
